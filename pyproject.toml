@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "math-expression-calculator"
+version = "0.1.0"
+description = "Библиотека для вычисления математических выражений из строк (production-ready)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Fortis-cloud" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.urls]
+Homepage = "https://github.com/Fortis-cloud/math-expression-calculator"
+Repository = "https://github.com/Fortis-cloud/math-expression-calculator.git"
+Documentation = "https://github.com/Fortis-cloud/math-expression-calculator#readme"
+
+[project.optional-dependencies]
+dev = [
+  "bandit",
+  "build",
+  "hypothesis",
+  "mypy",
+  "pip-audit",
+  "pytest",
+  "pytest-cov",
+  "ruff",
+  "twine",
+]
+
+[tool.setuptools.packages.find]
+include = ["calculator*"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+exclude = [".git", "__pycache__", "build", "dist", ".venv", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "C4", "SIM", "TCH"]
+ignore = ["UP006", "UP007", "UP045", "SIM105", "SIM108"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+warn_unreachable = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+ignore_missing_imports = false
+exclude = ["tests/"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+python_files = "test_*.py"
+markers = [
+  "slow: тесты, занимающие много времени",
+]
+
+[tool.coverage.run]
+source = ["calculator"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+  "if TYPE_CHECKING:",
+]
+fail_under = 90
+
+[tool.bandit]
+exclude_dirs = ["tests", "benchmarks"]
