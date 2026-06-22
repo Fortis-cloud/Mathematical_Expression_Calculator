@@ -55,6 +55,9 @@ assert calculator("x = 2; x * 3", variables={}) == 6
 calc = Calculator(variables={"x": 10}, precision=2)
 assert calc.evaluate("x / 3") == 3.33
 ```
+
+## Публичный API
+
 ```python
 def calculator(
     expression: str,
