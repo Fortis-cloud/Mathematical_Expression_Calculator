@@ -29,3 +29,49 @@ python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 python -m pip install -U pip
 python -m pip install -e .[dev]
+```
+## Использование
+
+```python
+from calculator import calculator, Calculator
+
+# Простые выражения
+assert calculator("2+3*4") == 14
+assert calculator("sqrt(16)") == 4
+
+# Переменные
+assert calculator("x*y+1", variables={"x": 5, "y": 10}) == 51
+
+# Тригонометрия в градусах
+assert calculator("sin(90)", angle_mode="deg") == 1
+
+# Округление
+assert calculator("10/3", precision=2) == 3.33
+
+# Присваивание
+assert calculator("x = 2; x * 3", variables={}) == 6
+
+# Использование класса Calculator
+calc = Calculator(variables={"x": 10}, precision=2)
+assert calc.evaluate("x / 3") == 3.33
+```
+```python
+def calculator(
+    expression: str,
+    *,
+    verbose: bool = False,
+    variables: dict[str, float | int] | None = None,
+    precision: int | None = None,
+    angle_mode: Literal["rad", "deg"] = "rad",
+) -> int | float:
+    """Вычисляет математическое выражение."""
+```
+
+## Архитектура
+входная строка
+→ нормализация
+→ токенизация с позициями
+→ рекурсивный спуск (парсер) → AST
+→ вычислитель
+→ постобработка (округление, приведение к int)
+→ результат
